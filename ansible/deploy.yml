@@ -1,0 +1,23 @@
+---
+- name: Deploy DevOps application to Kubernetes
+  hosts: kubernetes
+  gather_facts: false
+
+  tasks:
+    - name: Create namespace
+      command: kubectl apply -f k8s/namespace.yaml
+
+    - name: Deploy backend
+      command: kubectl apply -f k8s/backend.yaml
+
+    - name: Deploy frontend
+      command: kubectl apply -f k8s/frontend.yaml
+
+    - name: Show pods
+      command: kubectl get pods -n devops-demo
+      register: pods
+      changed_when: false
+
+    - name: Print pods
+      debug:
+        var: pods.stdout

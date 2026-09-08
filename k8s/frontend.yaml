@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-frontend
+  namespace: devops-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devops-frontend
+  template:
+    metadata:
+      labels:
+        app: devops-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: YOUR_DOCKERHUB_USERNAME/devops-frontend:IMAGE_TAG_PLACEHOLDER
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: devops-frontend
+  namespace: devops-demo
+spec:
+  selector:
+    app: devops-frontend
+  ports:
+    - port: 80
+      targetPort: 80
+  type: LoadBalancer
